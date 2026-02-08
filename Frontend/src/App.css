@@ -55,4 +55,6 @@ main .left .review {
 
 main .right {
   background-color: #343434;
+  padding: 1rem 2rem;
+  overflow: auto;
 }
