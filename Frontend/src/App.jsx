@@ -20,8 +20,6 @@ function App() {
         code,
       });
 
-      console.log(response.data);
-
       setReview(response.data);
     } finally {
       setLoading(false);
@@ -49,98 +47,260 @@ function App() {
   }
 
   return (
-    <main className="flex h-screen w-full min-w-[320px] gap-4 bg-black p-6">
-      <div className="relative h-full basis-1/2 overflow-auto rounded-[0.7rem] bg-[#1e1e1e]">
-        <div className="w-full rounded-[0.7rem] h-full">
-          <Editor
-            value={code}
-            onValueChange={(code) => setCode(code)}
-            highlight={(code) =>
-              prism.highlight(code, prism.languages.javascript, "javascript")
-            }
-            onClick={(e) => {
-              const textarea = e.currentTarget;
-              const lineHeight = 24;
-              const padding = 10;
-              const lineCount = code.split("\n").length;
-              const codeHeight = padding * 2 + lineCount * lineHeight;
-              if (e.nativeEvent.offsetY > codeHeight) {
-                textarea.setSelectionRange(code.length, code.length);
-              }
-            }}
-            padding={10}
-            style={{
-              fontFamily: '"Fira Code", "Fira Mono", monospace',
-              fontSize: 16,
-              lineHeight: 1.5,
-              borderRadius: "5px",
-              minHeight: "100%",
-              width: "100%",
-              backgroundColor: "transparent",
-              color: "white",
-            }}
-            textareaStyle={{
-              color: "transparent",
-              WebkitTextFillColor: "transparent",
-              caretColor: "white",
-            }}
-          />
-        </div>
+    <div className="min-h-screen bg-[#070b16] text-slate-100">
+      <div className="w-full px-4 pb-12 pt-5 sm:px-6 lg:px-8">
+        <header className="mb-8 rounded-full border border-slate-800/80 bg-slate-950/60 px-4 py-3 shadow-[0_0_0_1px_rgba(148,163,184,0.1)] backdrop-blur-sm sm:px-6">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-5">
+              <img
+                src="/public/logo.png"
+                alt="AICodeLens logo"
+                className="h-16 w-16 rounded-xl object-cover shadow-lg shadow-indigo-500/20"
+              />
 
-        <div
-          className="absolute bottom-4 right-4 cursor-pointer select-none bg-blue-600 px-6 py-2 text-[1.1rem] font-medium text-white hover:bg-blue-700 rounded-full"
-          onClick={reviewCode}
-        >
-          Review
-        </div>
-      </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-lg font-semibold tracking-tight text-white">
+                    AI Code Lens
+                  </span>
+                </div>
 
-      <div className="h-full basis-1/2 overflow-auto rounded-[0.7rem] bg-[#343434] px-8 py-4 text-white">
-        {loading ? (
-          <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-            <RingLoader color="#c1c1c1" size={100} />
-            <p className="text-2xl text-gray-300">Reviewing your code...</p>
+                <span className="text-xs capitalize text-slate-200">
+                  Review Code. Build Better.
+                </span>
+              </div>
+            </div>
+
+            <div className="hidden items-center gap-2 sm:flex">
+              <span className="rounded-full border border-slate-700 bg-slate-900/80 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.18em] text-slate-300">
+                Bug detection
+              </span>
+
+              <span className="rounded-full border border-slate-700 bg-slate-900/80 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.18em] text-slate-300">
+                Security
+              </span>
+            </div>
           </div>
-        ) : (
-          <Markdown
-            rehypePlugins={[rehypeHighlight]}
-            components={{
-              code({ className, children, ...props }) {
-                const match = /language-(\w+)/.exec(className || "");
-                const code = getCodeText(children).replace(/\n$/, "");
+        </header>
 
-                if (!match) {
-                  return (
-                    <code className={className} {...props}>
-                      {children}
-                    </code>
-                  );
-                }
+        <main className="space-y-8">
+          <section className="rounded-[28px] border border-slate-800/80 bg-[linear-gradient(180deg,rgba(15,23,42,0.88),rgba(15,23,42,0.72))] p-6 shadow-[0_18px_45px_rgba(15,23,42,0.55)] sm:p-8 lg:px-10 lg:py-8">
+            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-8">
+              <div className="w-full lg:w-[60%]">
+                <h1 className="mt-4 text-4xl font-semibold tracking-[-0.06em] text-white sm:text-5xl lg:text-6xl">
+                  Write better code with AI-powered reviews.
+                </h1>
 
-                return (
-                  <div className="relative my-4">
-                    <button
-                      onClick={() => copyCode(code)}
-                      className="absolute right-3 top-3 rounded-md bg-gray-700 px-3 py-1 text-sm text-white hover:bg-gray-600 cursor-pointer"
+                <p className="mt-4 max-w-xl text-base leading-7 text-slate-300 sm:text-lg">
+                  AI Code Lens analyzes your code to identify bugs, security
+                  issues, performance problems, and practical improvements
+                  before you ship.
+                </p>
+              </div>
+
+              <div className="w-full max-w-110 shrink-0 rounded-2xl border border-slate-700/80 bg-slate-950/80 p-4 shadow-inner shadow-slate-950/50">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {[
+                    ["Bugs", "AI catches logic issues"],
+                    ["Security", "Flags risky patterns"],
+                    ["Performance", "Finds bottlenecks"],
+                    ["Quality", "Improves clarity"],
+                  ].map(([label, text]) => (
+                    <div
+                      key={label}
+                      className="rounded-xl border border-slate-800 bg-slate-900/80 p-3"
                     >
-                      Copy
-                    </button>
+                      <div className="text-[10px] uppercase tracking-[0.2em] text-slate-400">
+                        {label}
+                      </div>
 
-                    <pre className="overflow-auto rounded-lg bg-[#1e1e1e] p-4">
-                      <code className={className} {...props}>
-                        {children}
-                      </code>
-                    </pre>
+                      <p className="mt-2 text-sm text-slate-200">{text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="rounded-[28px] border border-slate-800/80 bg-slate-900/70 p-3 shadow-[0_18px_40px_rgba(2,6,23,0.7)] sm:p-4">
+            <div className="flex flex-col gap-4 lg:flex-row">
+              <div className="flex w-full flex-col overflow-hidden rounded-[22px] border border-slate-800 bg-[#0e1527] lg:w-[52%] lg:max-h-170">
+                <div className="flex items-center justify-between border-b border-slate-800 bg-slate-950/80 px-4 py-3 sm:px-5">
+                  <div>
+                    <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-slate-400">
+                      Your Code
+                    </span>
                   </div>
-                );
-              },
-            }}
-          >
-            {review}
-          </Markdown>
-        )}
+
+                  <span className="rounded-full border border-slate-700 bg-slate-900 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-slate-300">
+                    Code-Editor
+                  </span>
+                </div>
+
+                <div className="relative flex-1 overflow-auto bg-[#0c1322]">
+                  <Editor
+                    value={code}
+                    onValueChange={(nextCode) => setCode(nextCode)}
+                    highlight={(currentCode) =>
+                      prism.highlight(
+                        currentCode,
+                        prism.languages.javascript,
+                        "javascript",
+                      )
+                    }
+                    onClick={(event) => {
+                      const textarea = event.currentTarget;
+                      const lineHeight = 24;
+                      const padding = 10;
+                      const lineCount = code.split("\n").length;
+                      const codeHeight = padding * 2 + lineCount * lineHeight;
+
+                      if (event.nativeEvent.offsetY > codeHeight) {
+                        textarea.setSelectionRange(code.length, code.length);
+                      }
+                    }}
+                    padding={18}
+                    className="min-h-full"
+                    preClassName="!m-0 !bg-transparent !text-[15px] !leading-7"
+                    style={{
+                      fontFamily: '"Fira Code", "Fira Mono", monospace',
+                      fontSize: 15,
+                      lineHeight: 1.75,
+                      minHeight: "100%",
+                      width: "100%",
+                      backgroundColor: "transparent",
+                      color: "#e2e8f0",
+                    }}
+                    textareaStyle={{
+                      color: "transparent",
+                      WebkitTextFillColor: "transparent",
+                      caretColor: "#f8fafc",
+                      minHeight: "100%",
+                      outline: "none",
+                      resize: "none",
+                    }}
+                  />
+                </div>
+                <div className="flex items-center justify-between border-t border-slate-800 bg-slate-950/90 px-4 py-3 sm:px-5">
+                  <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.16em] text-slate-400">
+                    <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                    Ready to review
+                  </div>
+                  <button
+                    type="button"
+                    onClick={reviewCode}
+                    disabled={loading}
+                    className="inline-flex items-center justify-center rounded-full bg-linear-to-r from-blue-600 to-indigo-600 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-blue-500/20 transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-70 cursor-pointer"
+                  >
+                    {loading ? "Reviewing..." : "Review"}
+                  </button>
+                </div>
+              </div>
+              <div className="w-full overflow-hidden rounded-[22px] border border-slate-800 bg-[#0d172a] lg:w-[48%]">
+                <div className="flex items-center justify-between border-b border-slate-800 bg-slate-950/80 px-4 py-3 sm:px-5">
+                  <div>
+                    <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-slate-400">
+                      AI Review
+                    </span>
+                  </div>
+
+                  <span className="rounded-full border border-violet-500/20 bg-violet-500/10 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-violet-200">
+                    Insights
+                  </span>
+                </div>
+                <div className="h-105 overflow-auto bg-[#0a1221] px-4 py-4 sm:px-5 lg:px-6">
+                  {loading ? (
+                    <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
+                      <RingLoader color="#c4d3ff" size={70} />
+
+                      <p className="text-lg font-medium text-slate-200">
+                        Reviewing your code...
+                      </p>
+                    </div>
+                  ) : review ? (
+                    <div className="prose prose-invert max-w-none prose-headings:scroll-mt-6 prose-headings:text-slate-100 prose-h1:text-2xl prose-h1:font-semibold prose-h2:mt-6 prose-h2:text-xl prose-h2:font-semibold prose-p:my-3 prose-p:leading-7 prose-p:text-slate-200 prose-ul:my-3 prose-ul:pl-6 prose-li:my-1 prose-li:text-slate-200 prose-strong:text-white prose-code:text-sky-200 prose-pre:overflow-x-auto prose-pre:rounded-xl prose-pre:border prose-pre:border-slate-700 prose-pre:bg-[#0b1120] prose-pre:p-4 prose-pre:shadow-inner prose-pre:shadow-slate-950/30 prose-hr:border-slate-700 prose-hr:my-5">
+                      <Markdown
+                        rehypePlugins={[rehypeHighlight]}
+                        components={{
+                          code({ className, children, ...props }) {
+                            const match = /language-(\w+)/.exec(
+                              className || "",
+                            );
+                            const code = getCodeText(children).replace(
+                              /\n$/,
+                              "",
+                            );
+
+                            if (!match) {
+                              return (
+                                <code className={className} {...props}>
+                                  {children}
+                                </code>
+                              );
+                            }
+
+                            return (
+                              <div className="relative my-4">
+                                <button
+                                  type="button"
+                                  onClick={() => copyCode(code)}
+                                  className="absolute right-2.5 top-2.5 rounded-md border border-slate-700 bg-slate-800/90 px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.12em] text-slate-200 transition hover:border-slate-500 hover:bg-slate-700 cursor-pointer"
+                                >
+                                  Copy
+                                </button>
+
+                                <pre className="overflow-auto rounded-xl border border-slate-700 bg-[#0b1120] p-4">
+                                  <code className={className} {...props}>
+                                    {children}
+                                  </code>
+                                </pre>
+                              </div>
+                            );
+                          },
+                        }}
+                      >
+                        {review}
+                      </Markdown>
+                    </div>
+                  ) : (
+                    <div className="flex h-full flex-col items-center justify-center text-center">
+                      <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-900/60 p-8 shadow-inner shadow-slate-950/40">
+                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-slate-700 bg-slate-950 text-slate-300">
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                          >
+                            <path
+                              d="M8 10.5V7.75A4.25 4.25 0 0 1 12.25 3.5h0A4.25 4.25 0 0 1 16.5 7.75v2.75M8 10.5h8M8 10.5V15.5A2.5 2.5 0 0 0 10.5 18h3A2.5 2.5 0 0 0 16 15.5v-5M9.5 14.5H14.5"
+                              stroke="currentColor"
+                              strokeWidth="1.6"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </div>
+
+                        <h2 className="text-xl font-semibold text-white">
+                          Ready for a fresh review
+                        </h2>
+
+                        <p className="mt-2 max-w-xs text-sm leading-6 text-slate-300">
+                          Submit your code to get AI feedback on bugs, security
+                          risks, performance issues, and opportunities to
+                          improve quality.
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
       </div>
-    </main>
+    </div>
   );
 }
 
