@@ -48,14 +48,14 @@ const model = genAI.getGenerativeModel({
   `,
 });
 
-// const prompt = "Explain REACTJS in 50-100 words";
-
-// const result =  model.generateContent(prompt);
-// console.log(result.response);
-
 async function generateContent(prompt) {
-  const result = await model.generateContent(prompt);
-  return result.response.text();
+  try {
+    const result = await model.generateContent(prompt);
+    return result.response.text();
+  } catch (error) {
+    console.error("Gemini API error:", error);
+    throw new Error("Failed to generate code review");
+  }
 }
 
 module.exports = { generateContent };
