@@ -68,7 +68,7 @@ function App() {
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-5">
               <img
-                src="/public/logo.png"
+                src="/logo.png"
                 alt="AICodeLens logo"
                 className="h-16 w-16 rounded-xl object-cover shadow-lg shadow-indigo-500/20"
               />
