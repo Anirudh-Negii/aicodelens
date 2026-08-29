@@ -1,6 +1,6 @@
 import "prismjs/themes/prism-tomorrow.css";
 import prism from "prismjs";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { RingLoader } from "react-spinners";
 import Editor from "react-simple-code-editor";
 import axios from "axios";
@@ -12,15 +12,21 @@ function App() {
   const [code, setCode] = useState(`// Paste your code here to get an AI review`);
   const [review, setReview] = useState("");
   const [loading, setLoading] = useState(false);
+  const [copiedCodeText, setCopiedCodeText] = useState("");
+  const copyResetTimeoutRef = useRef(null);
 
   async function reviewCode() {
     setLoading(true);
+
     try {
-      const response = await axios.post("http://localhost:3000/ai/get-review", {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/ai/get-review`, {
         code,
       });
 
       setReview(response.data);
+    } catch (error) {
+      console.error("Code review failed:", error);
+      setReview("Unable to review your code. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -28,6 +34,15 @@ function App() {
 
   async function copyCode(code) {
     await navigator.clipboard.writeText(code);
+
+    if (copyResetTimeoutRef.current) {
+      window.clearTimeout(copyResetTimeoutRef.current);
+    }
+
+    setCopiedCodeText(code);
+    copyResetTimeoutRef.current = window.setTimeout(() => {
+      setCopiedCodeText("");
+    }, 1200);
   }
 
   function getCodeText(node) {
@@ -253,7 +268,7 @@ function App() {
                                   onClick={() => copyCode(code)}
                                   className="absolute right-2.5 top-2.5 z-10 cursor-pointer rounded-md border border-slate-700 bg-slate-800/90 px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.12em] text-slate-200 transition hover:border-slate-500 hover:bg-slate-700"
                                 >
-                                  Copy
+                                  {copiedCodeText === code ? "Copied" : "Copy"}
                                 </button>
 
                                 <pre className="overflow-x-auto rounded-2xl border border-slate-700 bg-[#0b1120] p-5 shadow-inner shadow-slate-950/30">
