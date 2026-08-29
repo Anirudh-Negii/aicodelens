@@ -59,3 +59,7 @@ pre,
 code {
   font-family: "Fira Code", "SFMono-Regular", Consolas, monospace;
 }
+
+.code-editor textarea::selection {
+  background: transparent;
+}

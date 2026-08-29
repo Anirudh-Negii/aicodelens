@@ -166,18 +166,25 @@ function App() {
                       fontFamily: '"Fira Code", "Fira Mono", monospace',
                       fontSize: 15,
                       lineHeight: 1.75,
-                      minHeight: "100%",
+                      minHeight: "420px",
                       width: "100%",
                       backgroundColor: "transparent",
                       color: "#e2e8f0",
+                      whiteSpace: "pre-wrap",
+                      overflowWrap: "break-word",
                     }}
                     textareaStyle={{
                       color: "transparent",
                       WebkitTextFillColor: "transparent",
-                      caretColor: "#f8fafc",
-                      minHeight: "100%",
+                      caretColor: "white",
+                      backgroundColor: "transparent",
                       outline: "none",
                       resize: "none",
+                      lineHeight: "1.75",
+                      fontFamily: '"Fira Code", "Fira Mono", monospace',
+                      fontSize: "15px",
+                      letterSpacing: "normal",
+                      tabSize: 2,
                     }}
                   />
                 </div>
@@ -208,7 +215,7 @@ function App() {
                     Insights
                   </span>
                 </div>
-                <div className="h-105 overflow-auto bg-[#0a1221] px-4 py-4 sm:px-5 lg:px-6">
+                <div className="min-h-105 max-h-157 overflow-auto bg-[#0a1221] px-4 py-4 sm:px-5 lg:px-6">
                   {loading ? (
                     <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
                       <RingLoader color="#c4d3ff" size={70} />
@@ -218,7 +225,7 @@ function App() {
                       </p>
                     </div>
                   ) : review ? (
-                    <div className="prose prose-invert max-w-none prose-headings:scroll-mt-6 prose-headings:text-slate-100 prose-h1:text-2xl prose-h1:font-semibold prose-h2:mt-6 prose-h2:text-xl prose-h2:font-semibold prose-p:my-3 prose-p:leading-7 prose-p:text-slate-200 prose-ul:my-3 prose-ul:pl-6 prose-li:my-1 prose-li:text-slate-200 prose-strong:text-white prose-code:text-sky-200 prose-pre:overflow-x-auto prose-pre:rounded-xl prose-pre:border prose-pre:border-slate-700 prose-pre:bg-[#0b1120] prose-pre:p-4 prose-pre:shadow-inner prose-pre:shadow-slate-950/30 prose-hr:border-slate-700 prose-hr:my-5">
+                    <div className="prose prose-invert max-w-none leading-8 text-slate-200 prose-headings:scroll-mt-6 prose-headings:font-semibold prose-headings:text-white prose-h1:mt-0 prose-h1:mb-5 prose-h1:text-2xl prose-h1:tracking-[-0.04em] prose-h2:mt-8 prose-h2:mb-3 prose-h2:text-xl prose-h2:tracking-[-0.03em] prose-h3:mt-7 prose-h3:mb-2 prose-h3:text-[11px] prose-h3:font-semibold prose-h3:uppercase prose-h3:tracking-[0.16em] prose-h3:text-orange-300 prose-p:my-4 prose-p:leading-8 prose-p:text-slate-200 prose-ul:my-5 prose-ul:space-y-2 prose-ul:pl-6 prose-ol:my-5 prose-ol:space-y-2 prose-ol:pl-6 prose-li:my-1 prose-li:leading-7 prose-li:text-slate-200 prose-li:marker:text-orange-300 prose-strong:text-orange-100 prose-a:text-orange-300 prose-code:rounded-md prose-code:border prose-code:border-slate-700/80 prose-code:bg-slate-800/60 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-orange-200 prose-code:before:content-none prose-code:after:content-none prose-pre:my-5 prose-pre:overflow-x-auto prose-pre:rounded-2xl prose-pre:border prose-pre:border-slate-700 prose-pre:bg-[#0b1120] prose-pre:p-5 prose-pre:shadow-inner prose-pre:shadow-slate-950/30 prose-pre:code:text-[0.82rem] prose-pre:code:leading-7 prose-pre:code:whitespace-pre prose-hr:my-8 prose-hr:border-slate-700/80 prose-blockquote:border-l-2 prose-blockquote:border-orange-400/70 prose-blockquote:pl-4 prose-blockquote:text-slate-300">
                       <Markdown
                         rehypePlugins={[rehypeHighlight]}
                         components={{
@@ -240,16 +247,16 @@ function App() {
                             }
 
                             return (
-                              <div className="relative my-4">
+                              <div className="relative my-5">
                                 <button
                                   type="button"
                                   onClick={() => copyCode(code)}
-                                  className="absolute right-2.5 top-2.5 rounded-md border border-slate-700 bg-slate-800/90 px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.12em] text-slate-200 transition hover:border-slate-500 hover:bg-slate-700 cursor-pointer"
+                                  className="absolute right-2.5 top-2.5 z-10 cursor-pointer rounded-md border border-slate-700 bg-slate-800/90 px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.12em] text-slate-200 transition hover:border-slate-500 hover:bg-slate-700"
                                 >
                                   Copy
                                 </button>
 
-                                <pre className="overflow-auto rounded-xl border border-slate-700 bg-[#0b1120] p-4">
+                                <pre className="overflow-x-auto rounded-2xl border border-slate-700 bg-[#0b1120] p-5 shadow-inner shadow-slate-950/30">
                                   <code className={className} {...props}>
                                     {children}
                                   </code>
